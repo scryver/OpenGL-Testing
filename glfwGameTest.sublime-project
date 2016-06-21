@@ -1,0 +1,23 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+    "settings":
+    {
+        "sublimeclang_options":
+        [
+            "-Wno-deprecated-declarations",
+            "-isystem", "/usr/include",
+            "-isystem", "/usr/include/GL",
+            "-isystem", "/usr/include/ois",
+            "-isystem", "/usr/local/include",
+            "-isystem", "/usr/include/c++/*",
+            "-I${folder:${project_path:sfml-game.sublime-project}}/build/*",
+            "-I${folder:${project_path:sfml-game.sublime-project}}/src/*",
+            "-Wall"
+        ]
+    }
+}
