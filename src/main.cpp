@@ -8,7 +8,9 @@
 #include <GLFW/glfw3.h>
 
 #include "./renderelement.hpp"
-#include "./shaders.hpp"
+// #include "./shaders.hpp"
+#include "./shader.hpp"
+
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action,
                   int mode);
@@ -58,19 +60,26 @@ int main(int argc, char* argv[])
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-    GLuint shaderProgram = loadShaders("../res/shaders/simple.vs", "../res/shaders/simple.fs");
-    GLuint changeShader = loadShaders("../res/shaders/changer.vs", "../res/shaders/changer.fs");
+    Shader simpleShader("../res/shaders/simple.vs", "../res/shaders/simple.fs");
+    Shader changeShader("../res/shaders/changer.vs", "../res/shaders/changer.fs");
+    // GLuint shaderProgram = loadShaders("../res/shaders/simple.vs", "../res/shaders/simple.fs");
+    // GLuint changeShader = loadShaders("../res/shaders/changer.vs", "../res/shaders/changer.fs");
     // glUseProgram(shaderProgram);
 
-    // RenderElement triangle(shaderProgram);
-    // triangle.init({
-    //     -0.5f, -0.5f, 0.0f,
-    //      0.5f, -0.5f, 0.0f,
-    //      0.0f,  0.5f, 0.0f
-    // });
+    RenderElement triangle;
+    triangle.init({
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.0f,  0.5f, 0.0f
+    }, {
+        1.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 1.0f
+    });
+    triangle.setShader(&changeShader);
 
-    RenderElement square(shaderProgram);
-    square.init({
+    RenderElement square(&simpleShader);
+    square.initIdx({
         0.85f, 0.85f, 0.0f,  // Top Right
         0.85f, 0.5f, 0.0f,  // Bottom Right
         0.5f, 0.5f, 0.0f,  // Bottom Left
@@ -80,8 +89,8 @@ int main(int argc, char* argv[])
         1, 2, 3    // Second Triangle
     });
 
-    RenderElement cube(changeShader);
-    cube.init({
+    RenderElement cube(&changeShader);
+    cube.initIdx({
         0.5f, 0.5f, 0.5f,  // Top Right
         0.5f, -0.5f, 0.5f,  // Bottom Right
         -0.5f, -0.5f, 0.5f,  // Bottom Left
@@ -115,8 +124,8 @@ int main(int argc, char* argv[])
         glClear(GL_COLOR_BUFFER_BIT);
         {
             square.draw();
-            // triangle.draw();
-            cube.draw();
+            triangle.draw();
+            // cube.draw();
 
             glBindVertexArray(0);
         }
@@ -127,7 +136,7 @@ int main(int argc, char* argv[])
 
     cube.destroy();
     square.destroy();
-    // triangle.destroy();
+    triangle.destroy();
 
     glfwTerminate();
     return 0;

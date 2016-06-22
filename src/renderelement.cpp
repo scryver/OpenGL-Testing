@@ -1,11 +1,12 @@
 #include "./renderelement.hpp"
 
+#include <cassert>
 #include <cmath>
 #include <iostream>
 #include <GLFW/glfw3.h>
 
 
-RenderElement::RenderElement(GLuint shader, DrawingMode drawMode) :
+RenderElement::RenderElement(Shader* shader, DrawingMode drawMode) :
         _VBO(0), _EBO(0), _VAO(0), _shader(shader), _drawMode(drawMode)
 {
     // Empty
@@ -31,6 +32,30 @@ void RenderElement::init(const std::vector<GLfloat>& vertices) {
 }
 
 void RenderElement::init(const std::vector<GLfloat>& vertices,
+                         const std::vector<GLfloat>& colors) {
+    if (!_vertices.empty()) {
+        std::cout << "RenderElement already initialized" << std::endl;
+        return;
+    }
+    // Assert size is equal (both are multiplied by 3 (xyz and rgb resp.)).
+    assert(vertices.size() == colors.size());
+    _withColor = true;
+
+    std::vector<GLfloat> merged;
+    merged.resize(vertices.size() * 2);
+    for (size_t i = 0; i < vertices.size(); i += 3) {
+        merged[i * 2] = vertices[i];
+        merged[i * 2 + 1] = vertices[i + 1];
+        merged[i * 2 + 2] = vertices[i + 2];
+        merged[i * 2 + 3] = colors[i];
+        merged[i * 2 + 4] = colors[i + 1];
+        merged[i * 2 + 5] = colors[i + 2];
+    }
+
+    init(merged);
+}
+
+void RenderElement::initIdx(const std::vector<GLfloat>& vertices,
                          const std::vector<GLuint>& indices) {
     if (!_vertices.empty()) {
         std::cout << "RenderElement already initialized" << std::endl;
@@ -43,14 +68,38 @@ void RenderElement::init(const std::vector<GLfloat>& vertices,
     init(vertices);
 }
 
-void RenderElement::draw() {
-    glUseProgram(_shader);
+void RenderElement::initIdx(const std::vector<GLfloat>& vertices,
+                         const std::vector<GLfloat>& colors,
+                         const std::vector<GLuint>& indices) {
+    // Assert size is equal (both are multiplied by 3 (xyz and rgb resp.)).
+    assert(vertices.size() == colors.size());
+    _withColor = true;
 
-    GLfloat timeValue = glfwGetTime();
-    GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
-    GLint vertexColorLocation = glGetUniformLocation(_shader, "ourColor");
-    if (vertexColorLocation >= 0)
-        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+    std::vector<GLfloat> merged;
+    merged.resize(vertices.size() * 2);
+    for (size_t i = 0; i < vertices.size(); i += 3) {
+        merged[i * 2] = vertices[i];
+        merged[i * 2 + 1] = vertices[i + 1];
+        merged[i * 2 + 2] = vertices[i + 2];
+        merged[i * 2 + 3] = colors[i];
+        merged[i * 2 + 4] = colors[i + 1];
+        merged[i * 2 + 5] = colors[i + 2];
+    }
+
+    initIdx(merged, indices);
+}
+
+void RenderElement::draw() {
+    _shader->use();
+
+    // updateUniforms();
+
+    // // Uniform example ('name', 'type', 'value') = ("ourColor", "4f", varWithGreenValue)
+    // GLfloat timeValue = glfwGetTime();
+    // GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
+    // GLint vertexColorLocation = glGetUniformLocation(_shader->program(), "ourColor");
+    // if (vertexColorLocation >= 0)
+    //     glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
     if (_drawMode == DrawingMode::Dynamic || _drawMode == DrawingMode::Stream)
         bindBuffer();
@@ -105,8 +154,15 @@ void RenderElement::bindBuffer() {
         }
 
         // 3. Then set the vertex attributes pointers
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-        glEnableVertexAttribArray(0);
+        if (_withColor) {
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+            glEnableVertexAttribArray(1);
+        } else {
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+            glEnableVertexAttribArray(0);
+        }
     }
     // 4. Unbind VAO
     glBindVertexArray(0);

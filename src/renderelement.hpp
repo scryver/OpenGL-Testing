@@ -4,6 +4,9 @@
 #include <vector>
 #include <GL/glew.h>
 
+#include "./shader.hpp"
+
+
 class RenderElement
 {
 public:
@@ -13,18 +16,24 @@ public:
         Stream
     };
 
-    explicit RenderElement(GLuint shader = 0,
+    explicit RenderElement(Shader* shader = nullptr,
                            DrawingMode drawMode = DrawingMode::Static);
     ~RenderElement();
 
-    const GLuint shader() const { return _shader; }
+    const Shader& shader() const { return *_shader; }
     // Set the shader of this element
-    void setShader(GLuint shader) { _shader = shader; }
+    void setShader(Shader* shader) { _shader = shader; }
 
     // Init a render element with data, indices are optional but highly recommended
     void init(const std::vector<GLfloat>& vertices);
     void init(const std::vector<GLfloat>& vertices,
-              const std::vector<GLuint>& indices);
+              const std::vector<GLfloat>& colors);
+
+    void initIdx(const std::vector<GLfloat>& vertices,
+                 const std::vector<GLuint>& indices);
+    void initIdx(const std::vector<GLfloat>& vertices,
+                 const std::vector<GLfloat>& colors,
+                 const std::vector<GLuint>& indices);
 
     // Draw the element to the screen
     void draw();
@@ -40,8 +49,10 @@ private:
     // Vertex attributes
     GLuint _VAO;
 
+    bool _withColor;
+
     // Shader program id
-    GLuint _shader;
+    Shader* _shader;
 
     // Vertices as set by init function
     std::vector<GLfloat>   _vertices;

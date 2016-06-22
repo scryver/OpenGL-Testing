@@ -23,7 +23,7 @@ set(EXECUTABLE_NAME "GLFWGame")
 add_executable(${EXECUTABLE_NAME}
     src/main.cpp
     src/renderelement.cpp
-    src/shaders.cpp
+    src/shader.cpp
 )
 
 
