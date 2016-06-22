@@ -4,7 +4,16 @@
 #include <vector>
 #include <GL/glew.h>
 
+#include "./objects.hpp"
 #include "./shader.hpp"
+
+
+struct Vertex {
+    GampyCPP::Position3D position;
+    GampyCPP::ColorRGB color;
+    GampyCPP::TexCoord2D texture;
+    GampyCPP::Position3D normal;
+};
 
 
 class RenderElement

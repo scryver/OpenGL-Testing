@@ -24,6 +24,7 @@ add_executable(${EXECUTABLE_NAME}
     src/main.cpp
     src/renderelement.cpp
     src/shader.cpp
+    src/window.cpp
 )
 
 

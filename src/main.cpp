@@ -1,5 +1,6 @@
 #include "../build/config.h"
 
+#include <cassert>
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -7,13 +8,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "./window.hpp"
 #include "./renderelement.hpp"
-// #include "./shaders.hpp"
 #include "./shader.hpp"
-
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action,
-                  int mode);
 
 
 int main(int argc, char* argv[])
@@ -22,49 +19,10 @@ int main(int argc, char* argv[])
               << GLFW_GAME_VERSION_MAJOR << "." << GLFW_GAME_VERSION_MINOR
               << std::endl;
 
-    if (!glfwInit())
-    {
-        // Initialization failed
-        std::cerr << "Failed to initialize GLFW" << std::endl;
-        return -1;
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-    GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL",
-                                          nullptr, nullptr);
-    if (window == nullptr)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK)
-    {
-        std::cout << "Failed to initialize GLEW" << std::endl;
-        return -1;
-    }
-
-    glfwSetKeyCallback(window, key_callback);
-
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
-
-    glViewport(0, 0, width, height);
-
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    Window window;
 
     Shader simpleShader("../res/shaders/simple.vs", "../res/shaders/simple.fs");
     Shader changeShader("../res/shaders/changer.vs", "../res/shaders/changer.fs");
-    // GLuint shaderProgram = loadShaders("../res/shaders/simple.vs", "../res/shaders/simple.fs");
-    // GLuint changeShader = loadShaders("../res/shaders/changer.vs", "../res/shaders/changer.fs");
-    // glUseProgram(shaderProgram);
 
     RenderElement triangle;
     triangle.init({
@@ -114,7 +72,7 @@ int main(int argc, char* argv[])
         2, 6, 7    // Top Second Triangle
     });
 
-    while(!glfwWindowShouldClose(window))
+    while(!window.shouldClose())
     {
         // Check and call events
         glfwPollEvents();
@@ -131,27 +89,12 @@ int main(int argc, char* argv[])
         }
 
         // Swap the front/back buffer
-        glfwSwapBuffers(window);
+        window.swapBuffers();
     }
 
     cube.destroy();
     square.destroy();
     triangle.destroy();
 
-    glfwTerminate();
     return 0;
-}
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-    static bool wireMode = false;
-    // When a user presses the escape key, we set the WindowShouldClose property to true,
-    // closing the application
-    if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-        wireMode = !wireMode;
-        glPolygonMode(GL_FRONT_AND_BACK, wireMode ? GL_LINE : GL_FILL);
-    }
 }
