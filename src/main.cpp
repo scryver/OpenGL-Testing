@@ -8,6 +8,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "./objects.hpp"
 #include "./window.hpp"
 #include "./renderelement.hpp"
 #include "./shader.hpp"
@@ -20,6 +21,7 @@ int main(int argc, char* argv[])
               << std::endl;
 
     Window window;
+    window.backgroundColor(GampyCPP::ColorRGB(0.2f, 0.3f, 0.3f));
 
     Shader simpleShader("../res/shaders/simple.vs", "../res/shaders/simple.fs");
     Shader changeShader("../res/shaders/changer.vs", "../res/shaders/changer.fs");

@@ -6,6 +6,8 @@
 
 #include <exception>
 
+#include "./objects.hpp"
+
 class GLFWInitException: public std::exception
 {
     virtual const char* what() const throw()
@@ -50,21 +52,49 @@ public:
     }
 
     void swapBuffers() {
-        // Swap the front/back buffer
         glfwSwapBuffers(_glfwWindow);
     }
 
-    void activateContext() {
-        glfwMakeContextCurrent(_glfwWindow);
+    void activateContext();
+
+    void backgroundColor(float r, float g, float b, float a = 1.0f) {
+        _backgroundColor.r = r;
+        _backgroundColor.g = g;
+        _backgroundColor.b = b;
+        _backgroundColor.a = a;
+
+        glClearColor(_backgroundColor.r,
+                     _backgroundColor.g,
+                     _backgroundColor.b,
+                     _backgroundColor.a);
+    }
+
+    void backgroundColor(const GampyCPP::ColorRGB& color) {
+        _backgroundColor = color;
+        glClearColor(_backgroundColor.r,
+                     _backgroundColor.g,
+                     _backgroundColor.b,
+                     _backgroundColor.a);
+    }
+
+    void backgroundColor(const GampyCPP::ColorRGBA& color) {
+        _backgroundColor = color;
+        glClearColor(_backgroundColor.r,
+                     _backgroundColor.g,
+                     _backgroundColor.b,
+                     _backgroundColor.a);
     }
 
 private:
     GLFWwindow*     _glfwWindow;
     bool            _wireMode;
     int             _width, _height;
+    GampyCPP::ColorRGBA _backgroundColor;
 
     static void _glfwKeyCallback(GLFWwindow* window, int key, int scancode,
                                  int action, int mode);
+
+    static int _referenceCount;
 };
 
 #endif  // GLFW_GAME_Window_HPP

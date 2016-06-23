@@ -1,19 +1,29 @@
 #include "./window.hpp"
 
+#ifndef NDEBUG
 #include <iostream>
+#endif
 
 GLFWInitException glfwInitException;
 CreateWindowException createWindowException;
 GLEWInitException glewInitException;
 
+int Window::_referenceCount = 0;
+
+
 Window::Window() :
     _glfwWindow(nullptr),
     _wireMode(false)
 {
-    if (!glfwInit())
-    {
-        // Initialization failed
-        throw glfwInitException;
+    if (_referenceCount == 0) {
+#ifndef NDEBUG
+        std::cout << "GLFW Init" << std::endl;
+#endif
+        if (!glfwInit())
+        {
+            // Initialization failed
+            throw glfwInitException;
+        }
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -31,27 +41,35 @@ Window::Window() :
     }
     activateContext();
 
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK)
-    {
-        glfwTerminate();
-        throw glewInitException;
-    }
-
     glfwSetWindowUserPointer(_glfwWindow, this);
-
     glfwSetKeyCallback(_glfwWindow, _glfwKeyCallback);
 
     glfwGetFramebufferSize(_glfwWindow, &_width, &_height);
-
     glViewport(0, 0, _width, _height);
 
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    backgroundColor(0.f, 0.f, 0.f, 1.f);
+
+    _referenceCount++;
 }
 
 Window::~Window() {
-    std::cout << "Window destroyed" << std::endl;
-    glfwTerminate();
+    _referenceCount--;
+    if (_referenceCount == 0) {
+#ifndef NDEBUG
+        std::cout << "GLFW Terminate" << std::endl;
+#endif
+        glfwTerminate();
+    }
+}
+
+void Window::activateContext() {
+    glfwMakeContextCurrent(_glfwWindow);
+
+    glewExperimental = GL_TRUE;
+    if (glewInit() != GLEW_OK)
+    {
+        throw glewInitException;
+    }
 }
 
 void Window::_glfwKeyCallback(GLFWwindow* window, int key, int scancode,
