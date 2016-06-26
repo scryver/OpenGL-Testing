@@ -35,6 +35,8 @@ class GLEWInitException: public std::exception
 };
 
 
+namespace GampyCPP {
+
 class Window
 {
 public:
@@ -69,7 +71,7 @@ public:
                      _backgroundColor.a);
     }
 
-    void backgroundColor(const GampyCPP::ColorRGB& color) {
+    void backgroundColor(const ColorRGB& color) {
         _backgroundColor = color;
         glClearColor(_backgroundColor.r,
                      _backgroundColor.g,
@@ -77,7 +79,7 @@ public:
                      _backgroundColor.a);
     }
 
-    void backgroundColor(const GampyCPP::ColorRGBA& color) {
+    void backgroundColor(const ColorRGBA& color) {
         _backgroundColor = color;
         glClearColor(_backgroundColor.r,
                      _backgroundColor.g,
@@ -89,12 +91,14 @@ private:
     GLFWwindow*     _glfwWindow;
     bool            _wireMode;
     int             _width, _height;
-    GampyCPP::ColorRGBA _backgroundColor;
+    ColorRGBA _backgroundColor;
 
     static void _glfwKeyCallback(GLFWwindow* window, int key, int scancode,
                                  int action, int mode);
 
     static int _referenceCount;
 };
+
+}  // namespace GampyCPP
 
 #endif  // GLFW_GAME_Window_HPP

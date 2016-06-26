@@ -1,0 +1,11 @@
+FILE(GLOB SRCS *.cpp)
+
+ADD_EXECUTABLE(testwindow ${SRCS})
+
+TARGET_LINK_LIBRARIES(testwindow
+    gcEngine
+    ${GTEST_LIBRARIES}
+    ${GMOCK_LIBRARIES}
+)
+
+INSTALL(TARGETS testwindow DESTINATION bin)

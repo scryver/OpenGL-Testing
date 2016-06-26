@@ -8,10 +8,10 @@ GLFWInitException glfwInitException;
 CreateWindowException createWindowException;
 GLEWInitException glewInitException;
 
-int Window::_referenceCount = 0;
+int GampyCPP::Window::_referenceCount = 0;
 
 
-Window::Window() :
+GampyCPP::Window::Window() :
     _glfwWindow(nullptr),
     _wireMode(false)
 {
@@ -52,7 +52,7 @@ Window::Window() :
     _referenceCount++;
 }
 
-Window::~Window() {
+GampyCPP::Window::~Window() {
     _referenceCount--;
     if (_referenceCount == 0) {
 #ifndef NDEBUG
@@ -62,7 +62,7 @@ Window::~Window() {
     }
 }
 
-void Window::activateContext() {
+void GampyCPP::Window::activateContext() {
     glfwMakeContextCurrent(_glfwWindow);
 
     glewExperimental = GL_TRUE;
@@ -72,7 +72,7 @@ void Window::activateContext() {
     }
 }
 
-void Window::_glfwKeyCallback(GLFWwindow* window, int key, int scancode,
+void GampyCPP::Window::_glfwKeyCallback(GLFWwindow* window, int key, int scancode,
                               int action, int mode) {
     // When a user presses the escape key, we set the WindowShouldClose property to true,
     // closing the application

@@ -1,0 +1,11 @@
+FILE(GLOB SRCS *.cpp)
+
+ADD_EXECUTABLE(testEngineMath ${SRCS})
+
+TARGET_LINK_LIBRARIES(testEngineMath
+    gcEngine
+    ${GTEST_LIBRARIES}
+    ${GMOCK_LIBRARIES}
+)
+
+INSTALL(TARGETS testEngineMath DESTINATION bin)

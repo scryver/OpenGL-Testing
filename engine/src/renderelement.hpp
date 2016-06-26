@@ -7,6 +7,8 @@
 #include "./objects.hpp"
 #include "./shader.hpp"
 
+namespace GampyCPP {
+
 
 struct Vertex {
     GampyCPP::Position3D position;
@@ -75,5 +77,7 @@ private:
     // Bind the vertices and indices data to the graphics card
     void bindBuffer();
 };
+
+}  // namespace GampyCPP
 
 #endif  // RenderElement_HPP

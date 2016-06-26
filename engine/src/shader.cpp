@@ -2,7 +2,7 @@
 
 #include <string>
 
-Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+GampyCPP::Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 {
     // 1. Retrieve the vertex/fragment source code from filePath
     std::string vertexCode;

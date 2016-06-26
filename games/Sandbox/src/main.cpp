@@ -1,5 +1,3 @@
-#include "../build/config.h"
-
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -8,25 +6,23 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "./objects.hpp"
-#include "./window.hpp"
-#include "./renderelement.hpp"
-#include "./shader.hpp"
+#include "../../../engine/src/All.hpp"
 
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Version "
-              << GLFW_GAME_VERSION_MAJOR << "." << GLFW_GAME_VERSION_MINOR
+    std::cout << "GampyCPP Version "
+              << GampyCPP::VERSION_MAJOR << "."
+              << GampyCPP::VERSION_MINOR
               << std::endl;
 
-    Window window;
+    GampyCPP::Window window;
     window.backgroundColor(GampyCPP::ColorRGB(0.2f, 0.3f, 0.3f));
 
-    Shader simpleShader("../res/shaders/simple.vs", "../res/shaders/simple.fs");
-    Shader changeShader("../res/shaders/changer.vs", "../res/shaders/changer.fs");
+    GampyCPP::Shader simpleShader("../res/shaders/simple.vs", "../res/shaders/simple.fs");
+    GampyCPP::Shader changeShader("../res/shaders/changer.vs", "../res/shaders/changer.fs");
 
-    RenderElement triangle;
+    GampyCPP::RenderElement triangle;
     triangle.init({
         -0.5f, -0.5f, 0.0f,
          0.5f, -0.5f, 0.0f,
@@ -38,7 +34,7 @@ int main(int argc, char* argv[])
     });
     triangle.setShader(&changeShader);
 
-    RenderElement square(&simpleShader);
+    GampyCPP::RenderElement square(&simpleShader);
     square.initIdx({
         0.85f, 0.85f, 0.0f,  // Top Right
         0.85f, 0.5f, 0.0f,  // Bottom Right
@@ -49,7 +45,7 @@ int main(int argc, char* argv[])
         1, 2, 3    // Second Triangle
     });
 
-    RenderElement cube(&changeShader);
+    GampyCPP::RenderElement cube(&changeShader);
     cube.initIdx({
         0.5f, 0.5f, 0.5f,  // Top Right
         0.5f, -0.5f, 0.5f,  // Bottom Right

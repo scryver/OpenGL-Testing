@@ -8,6 +8,8 @@
 
 #include <GL/glew.h>
 
+namespace GampyCPP {
+
 class Shader
 {
 public:
@@ -19,5 +21,7 @@ public:
 private:
     GLuint _program;
 };
+
+} // namespace GampyCPP
 
 #endif  // Shader_HPP

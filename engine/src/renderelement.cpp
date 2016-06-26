@@ -6,18 +6,18 @@
 #include <GLFW/glfw3.h>
 
 
-RenderElement::RenderElement(Shader* shader, DrawingMode drawMode) :
+GampyCPP::RenderElement::RenderElement(Shader* shader, DrawingMode drawMode) :
         _VBO(0), _EBO(0), _VAO(0), _shader(shader), _drawMode(drawMode)
 {
     // Empty
 }
 
-RenderElement::~RenderElement()
+GampyCPP::RenderElement::~RenderElement()
 {
     destroy();
 }
 
-void RenderElement::init(const std::vector<GLfloat>& vertices) {
+void GampyCPP::RenderElement::init(const std::vector<GLfloat>& vertices) {
     if (!_vertices.empty()) {
         std::cout << "RenderElement already initialized" << std::endl;
         return;
@@ -31,8 +31,8 @@ void RenderElement::init(const std::vector<GLfloat>& vertices) {
     bindBuffer();
 }
 
-void RenderElement::init(const std::vector<GLfloat>& vertices,
-                         const std::vector<GLfloat>& colors) {
+void GampyCPP::RenderElement::init(const std::vector<GLfloat>& vertices,
+                                   const std::vector<GLfloat>& colors) {
     if (!_vertices.empty()) {
         std::cout << "RenderElement already initialized" << std::endl;
         return;
@@ -55,8 +55,8 @@ void RenderElement::init(const std::vector<GLfloat>& vertices,
     init(merged);
 }
 
-void RenderElement::initIdx(const std::vector<GLfloat>& vertices,
-                         const std::vector<GLuint>& indices) {
+void GampyCPP::RenderElement::initIdx(const std::vector<GLfloat>& vertices,
+                                      const std::vector<GLuint>& indices) {
     if (!_vertices.empty()) {
         std::cout << "RenderElement already initialized" << std::endl;
         return;
@@ -68,9 +68,9 @@ void RenderElement::initIdx(const std::vector<GLfloat>& vertices,
     init(vertices);
 }
 
-void RenderElement::initIdx(const std::vector<GLfloat>& vertices,
-                         const std::vector<GLfloat>& colors,
-                         const std::vector<GLuint>& indices) {
+void GampyCPP::RenderElement::initIdx(const std::vector<GLfloat>& vertices,
+                                      const std::vector<GLfloat>& colors,
+                                      const std::vector<GLuint>& indices) {
     // Assert size is equal (both are multiplied by 3 (xyz and rgb resp.)).
     assert(vertices.size() == colors.size());
     _withColor = true;
@@ -89,7 +89,7 @@ void RenderElement::initIdx(const std::vector<GLfloat>& vertices,
     initIdx(merged, indices);
 }
 
-void RenderElement::draw() {
+void GampyCPP::RenderElement::draw() {
     _shader->use();
 
     // updateUniforms();
@@ -115,7 +115,7 @@ void RenderElement::draw() {
     glUseProgram(0);
 }
 
-void RenderElement::destroy() {
+void GampyCPP::RenderElement::destroy() {
     if (!_vertices.empty()) {
         glDeleteVertexArrays(1, &_VAO);
         glDeleteBuffers(1, &_VBO);
@@ -127,7 +127,7 @@ void RenderElement::destroy() {
     _indices.clear();
 }
 
-void RenderElement::bindBuffer() {
+void GampyCPP::RenderElement::bindBuffer() {
     // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
     // 1. Bind Vertex Array Object
     glBindVertexArray(_VAO);
