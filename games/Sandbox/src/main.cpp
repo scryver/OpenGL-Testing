@@ -8,7 +8,6 @@
 
 #include "../../../engine/src/All.hpp"
 
-
 int main(int argc, char* argv[])
 {
     std::cout << "GampyCPP Version "
@@ -17,7 +16,7 @@ int main(int argc, char* argv[])
               << std::endl;
 
     GampyCPP::Window window;
-    window.backgroundColor(GampyCPP::ColorRGB(0.2f, 0.3f, 0.3f));
+    window.backgroundColor(GampyCPP::ColorRGBA(0.2f, 0.3f, 0.3f, 0.0f));
 
     GampyCPP::Shader simpleShader("../res/shaders/simple.vs", "../res/shaders/simple.fs");
     GampyCPP::Shader changeShader("../res/shaders/changer.vs", "../res/shaders/changer.fs");
@@ -76,7 +75,6 @@ int main(int argc, char* argv[])
         glfwPollEvents();
 
         // Render
-        // ...
         glClear(GL_COLOR_BUFFER_BIT);
         {
             square.draw();
