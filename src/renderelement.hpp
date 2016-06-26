@@ -68,7 +68,7 @@ private:
     // Optional indices for element buffering
     std::vector<GLuint>    _indices;
 
-    // Drawing mode, in static and stream mode the bindBuffer is called every
+    // Drawing mode, in dynamic and stream mode the bindBuffer is called every
     // frame to update data
     DrawingMode             _drawMode;
 
