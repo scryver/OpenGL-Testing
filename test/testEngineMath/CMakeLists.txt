@@ -9,3 +9,5 @@ TARGET_LINK_LIBRARIES(testEngineMath
 )
 
 INSTALL(TARGETS testEngineMath DESTINATION bin)
+
+ADD_CUSTOM_COMMAND(TARGET testEngineMath POST_BUILD COMMAND "./testEngineMath")

@@ -9,3 +9,5 @@ TARGET_LINK_LIBRARIES(testwindow
 )
 
 INSTALL(TARGETS testwindow DESTINATION bin)
+
+ADD_CUSTOM_COMMAND(TARGET testwindow POST_BUILD COMMAND "./testwindow")
