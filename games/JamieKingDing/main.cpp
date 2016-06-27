@@ -50,15 +50,22 @@ int main(int argc, char* argv[])
     }
     glBindVertexArray(0);
 
+    // glfwSwapInterval(0);
+
     while(!window.shouldClose())
     {
         // Check and call events
         glfwPollEvents();
 
+        // Update
+        {
+            Vector2D velocity(0.01f, 0.01f);
+            shipPosition = shipPosition + velocity;
+        }
+
         // Render
         glClear(GL_COLOR_BUFFER_BIT);
         {
-
             shader2d.use();
             glBindVertexArray(VAO);
 

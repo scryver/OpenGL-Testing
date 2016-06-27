@@ -1,3 +1,4 @@
+#include "./clock.hpp"
 #include "./objects.hpp"
 #include "./renderelement.hpp"
 #include "./shader.hpp"

@@ -1,0 +1,13 @@
+FILE(GLOB SRCS *.cpp)
+
+ADD_EXECUTABLE(testEngine ${SRCS})
+
+TARGET_LINK_LIBRARIES(testEngine
+    gcEngine
+    ${GTEST_LIBRARIES}
+    ${GMOCK_LIBRARIES}
+)
+
+# INSTALL(TARGETS testEngine DESTINATION bin)
+
+ADD_CUSTOM_COMMAND(TARGET testEngine POST_BUILD COMMAND "./testEngine")

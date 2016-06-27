@@ -52,5 +52,5 @@ INCLUDE_DIRECTORIES("${source_dir}/include")
 
 SET(GTEST_LIBRARIES libgtest)
 SET(GMOCK_LIBRARIES libgmock)
-ADD_SUBDIRECTORY(testwindow)
-ADD_SUBDIRECTORY(testEngineMath)
+
+ADD_SUBDIRECTORY(testengine)
