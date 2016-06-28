@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "../../engine/src/All.hpp"
+#include <GampyCPP/All>
 
 using GampyCPP::Math::Vector2D;
 

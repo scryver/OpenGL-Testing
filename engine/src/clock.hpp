@@ -9,14 +9,14 @@ namespace GampyCPP {
 class Clock
 {
 public:
-    Clock() : _lastTime(0.0), _newFrameTime(0.0) { }
-    ~Clock() { }
+    Clock();
+    ~Clock();
 
-    bool initialize() { glfwSetTime(_lastTime); return glfwGetTime() != 0.0; }
-    bool shutdown() { _lastTime = 0.0; _newFrameTime = 0.0; return true; }
+    bool initialize();
+    bool shutdown();
 
-    void newFrame() { _lastTime = _newFrameTime; _newFrameTime = glfwGetTime(); }
-    float timeElapsedLastFrame() { return _newFrameTime - _lastTime; }
+    void newFrame();
+    double dtLastFrame() const;
 
 private:
     double _lastTime;

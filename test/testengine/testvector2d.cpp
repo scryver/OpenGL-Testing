@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../../engine/src/math/vector2d.hpp"
+#include <GampyCPP/Math/Vector>
 
 using GampyCPP::Math::Vector2D;
 

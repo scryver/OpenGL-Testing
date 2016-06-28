@@ -1,0 +1,7 @@
+#include "./Clock"
+#include "./Window"
+#include "./Math/Vector"
+#include "../../src/objects.hpp"
+#include "../../src/renderelement.hpp"
+#include "../../src/shader.hpp"
+#include "../../src/utils.hpp"
