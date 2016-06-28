@@ -43,6 +43,9 @@ public:
     Window();
     ~Window();
 
+    void initialize();
+    void destroy();
+
     const int width() const { return _width; }
     const int height() const { return _height; }
 

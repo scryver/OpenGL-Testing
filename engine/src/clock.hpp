@@ -12,8 +12,7 @@ public:
     Clock();
     ~Clock();
 
-    bool initialize();
-    bool shutdown();
+    bool reset();
 
     void newFrame();
     double dtLastFrame() const;

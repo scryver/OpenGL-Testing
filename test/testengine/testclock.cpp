@@ -9,8 +9,13 @@
 #include <GampyCPP/Clock>
 
 std::mt19937 randomEngine(time(NULL));
+#if defined(FULL_TESTS) && FULL_TESTS
 std::uniform_int_distribution<int> randomTestNrGenerator(10, 200);
 std::uniform_int_distribution<int> randomTestsGenerator(0, 10000);
+#else
+std::uniform_int_distribution<int> randomTestNrGenerator(1, 20);
+std::uniform_int_distribution<int> randomTestsGenerator(0, 700);
+#endif
 
 using std::cout;
 using std::endl;
@@ -21,14 +26,30 @@ TEST(Clock, Initialize)
 {
     ASSERT_FALSE(!glfwInit());
     Clock clock;
-    EXPECT_TRUE(clock.initialize());
-    EXPECT_TRUE(clock.shutdown());
+    EXPECT_TRUE(clock.reset());
+}
+
+TEST(Clock, Reset)
+{
+    Clock clock;
+    EXPECT_TRUE(clock.reset());
+    EXPECT_TRUE(clock.dtLastFrame() == 0.0);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    EXPECT_TRUE(clock.dtLastFrame() == 0.0);
+    clock.newFrame();
+    EXPECT_TRUE(clock.dtLastFrame() < 1.1 && clock.dtLastFrame() > 0.9);
+    clock.newFrame();
+    clock.newFrame();
+    EXPECT_TRUE(clock.dtLastFrame() < 0.00001);
+    clock.reset();
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    EXPECT_TRUE(clock.dtLastFrame() == 0.0);
 }
 
 TEST(Clock, FrameTimeMeasuring)
 {
     Clock clock;
-    EXPECT_TRUE(clock.initialize());
+    EXPECT_TRUE(clock.reset());
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     clock.newFrame();
     double timedTime = clock.dtLastFrame();
@@ -62,5 +83,5 @@ TEST(Clock, FrameTimeMeasuring)
     }
     cout << endl;
 
-    EXPECT_TRUE(clock.shutdown());
+    EXPECT_TRUE(clock.reset());
 }

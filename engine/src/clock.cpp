@@ -1,27 +1,21 @@
 #include "./clock.hpp"
 
-GampyCPP::Clock::Clock() :
-    _lastTime(0.0), _newFrameTime(0.0)
+GampyCPP::Clock::Clock()
 {
-
+    reset();
 }
 
 GampyCPP::Clock::~Clock()
 {
-
+    // Empty
 }
 
-bool GampyCPP::Clock::initialize()
-{
-    glfwSetTime(_lastTime);
-    return glfwGetTime() != 0.0;
-}
-
-bool GampyCPP::Clock::shutdown()
+bool GampyCPP::Clock::reset()
 {
     _lastTime = 0.0;
     _newFrameTime = 0.0;
-    return true;
+    glfwSetTime(_lastTime);
+    return glfwGetTime() != 0.0;
 }
 
 void GampyCPP::Clock::newFrame()

@@ -50,6 +50,10 @@ int main(int argc, char* argv[])
     }
     glBindVertexArray(0);
 
+    GampyCPP::Clock clock;
+    if (!clock.reset())
+        return -1;
+
     // glfwSwapInterval(0);
 
     while(!window.shouldClose())
